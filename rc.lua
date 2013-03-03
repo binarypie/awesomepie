@@ -3,11 +3,8 @@ local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
 awful.autofocus = require("awful.autofocus")
--- Widget and layout library
 local wibox = require("wibox")
--- Theme handling library
 local beautiful = require("beautiful")
--- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
 local vicious = require("vicious")
@@ -45,7 +42,15 @@ active_theme = themes .. "/blueberry"
 
 -- Themes define colours, icons, and wallpapers
 beautiful.init(active_theme.."/theme.lua")
--- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+
+
+-- Custom Widgets
+local battery = require("battery")
+local clock   = require("clock")
+local cpu     = require("cpu")
+local network = require("network")
+local ram     = require("ram")
+local volume  = require("volume")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -118,97 +123,6 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- {{{ Volume
-volicon = wibox.widget.imagebox()
-volicon:set_image(beautiful.widget_vol)
-volumewidget = wibox.widget.textbox()
-vicious.register( volumewidget, vicious.widgets.volume, "<span>$1%</span>", 1, "Master" )
-volumewidget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("amixer -q sset Master toggle", false) end)
-))
-
--- }}}
-
--- {{{ Cpu
-cpuicon = wibox.widget.imagebox()
-cpuicon:set_image(beautiful.widget_cpu)
-cpuwidget = wibox.widget.textbox()
-vicious.register( cpuwidget, vicious.widgets.cpu, "<span>$1%</span>", 3)
--- }}}
-
--- {{{ Ram
-memicon = wibox.widget.imagebox()
-memicon:set_image(beautiful.widget_mem)
-memwidget = wibox.widget.textbox()
-vicious.register(memwidget, vicious.widgets.mem, "<span>$1%</span>", 1)
--- }}}
-
--- {{{ Net
-netdownicon = wibox.widget.imagebox()
-netdownicon:set_image(beautiful.widget_netdown)
-
-netupicon = wibox.widget.imagebox()
-netupicon:set_image(beautiful.widget_netup)
-
-wifidowninfo = wibox.widget.textbox()
-vicious.register(wifidowninfo, function(format, warg)
-    local args = vicious.widgets.net(format, warg)
-    -- Wireless
-    if type(args['{wlan0 down_kb}']) ~= nil then
-        args['{down}'] = args['{wlan0 down_kb}']
-    -- Lenovo eth adapter
-    elseif type(args['{eth0 down_kb}']) ~= nil then
-        args['{down}'] = args['{eth0 down_kb}']
-    -- Apple adapter
-    elseif type(args['{enp0s20u2 down_kb}']) ~= nil then
-        args['{down}'] = args['{enp0s20u2 down_kb}']
-    -- Unknown
-    else
-        args['{down}'] = '-.-'
-    end
-    return args
-end, "<span>${down}</span>", 1)
-
-wifiupinfo = wibox.widget.textbox()
-vicious.register(wifiupinfo, function(format, warg)
-    local args = vicious.widgets.net(format, warg)
-    -- Wireless
-    if type(args['{wlan0 up_kb}']) ~= nil then
-        args['{up}'] = args['{wlan0 up_kb}']
-    -- Lenovo eth adapter
-    elseif type(args['{eth0 down_kb}']) ~= nil then
-        args['{up}'] = args['{eth0 up_kb}']
-    -- Apple adapter
-    elseif type(args['{enp0s20u2 down_kb}']) ~= nil then
-        args['{up}'] = args['{enp0s20u2 up_kb}']
-    -- Unknown
-    else
-        args['{up}'] = '-.-'
-    end
-    return args
-end, "<span>${up}</span>", 1)
--- }}}
-
--- {{{ Battery
-batticon = wibox.widget.imagebox()
-battwidget = wibox.widget.textbox();
-vicious.register(battwidget, function(format, warg)
-  local args = vicious.widgets.bat(format, warg)
-  if args[2] < 25 then
-    batticon:set_image(beautiful.widget_batt_empty)
-  elseif args[2] < 50 then
-    batticon:set_image(beautiful.widget_batt_low)
-  elseif args[2] < 75 then
-    batticon:set_image(beautiful.widget_batt)
-  elseif args[2] < 100 then
-    batticon:set_image(beautiful.widget_batt_full)
-  else
-    batticon:set_image(beautiful.widget_batt_ac)
-  end
-  return args
-end, '<span>$2%</span>', 10, 'BAT0')
--- }}}
-
 -- {{{ Spacers
 rbracket = wibox.widget.textbox()
 rbracket:set_text(']')
@@ -223,13 +137,10 @@ space:set_text(' ')
 
 
 -- {{{ Wibox
--- Create a textclock widget
-mytextclock = awful.widget.textclock()
-mytextclockicon = wibox.widget.imagebox()
-mytextclockicon:set_image(beautiful.widget_clock)
-
+--
 -- Create a wibox for each screen and add it
 mywibox = {}
+mywibox2 = {}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
@@ -295,6 +206,7 @@ for s = 1, screen.count() do
 
     -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s })
+    mywibox2[s] = awful.wibox({ position = "bottom", screen = s})
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
@@ -305,19 +217,21 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(netdownicon)
-    right_layout:add(wifidowninfo)
-    right_layout:add(netupicon)
-    right_layout:add(wifiupinfo)
-    right_layout:add(cpuicon)
-    right_layout:add(cpuwidget)
-    right_layout:add(memicon)
-    right_layout:add(memwidget)
-    right_layout:add(volicon)
-    right_layout:add(volumewidget)
-    right_layout:add(batticon)
-    right_layout:add(battwidget)
-    right_layout:add(mytextclock)
+    right_layout:add(network.downicon)
+    right_layout:add(network.downwidget)
+    right_layout:add(network.upicon)
+    right_layout:add(network.upwidget)
+    right_layout:add(cpu.icon)
+    right_layout:add(cpu.widget)
+    right_layout:add(ram.icon)
+    right_layout:add(ram.widget)
+    right_layout:add(volume.icon)
+    right_layout:add(volume.widget)
+    right_layout:add(battery.icon)
+    right_layout:add(battery.widget)
+    right_layout:add(space)
+    right_layout:add(clock.widget)
+    right_layout:add(space)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
@@ -326,7 +240,11 @@ for s = 1, screen.count() do
     -- layout:set_middle(mytasklist[s])
     layout:set_right(right_layout)
 
+    local layout2 = wibox.layout.align.horizontal()
+    layout2:set_left(mytasklist[s])
+
     mywibox[s]:set_widget(layout)
+    mywibox2[s]:set_widget(layout2)
 end
 -- }}}
 
