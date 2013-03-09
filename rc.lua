@@ -51,6 +51,7 @@ local cpu     = require("cpu")
 local network = require("network")
 local ram     = require("ram")
 local volume  = require("volume")
+local menu    = require("menu")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -99,25 +100,6 @@ for s = 1, screen.count() do
 end
 
 -- }}}
-
--- {{{ Menu
--- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
-
-mymainmenu = awful.menu({ items = { 
-                                    { "awesome", myawesomemenu },
-                                    { "chromium", "chromium" },
-                                    { "terminal", terminal }
-                                  }
-                        })
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -210,7 +192,7 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
+    left_layout:add(menu.launcher)
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
 
