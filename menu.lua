@@ -11,15 +11,31 @@ local awesomeMenu = {
    { "quit", awesome.quit }
 }
 
+local utilMenu = {
+    { "ranger", terminal.." -e ranger"},
+    { "speedcrunch", "speedcrunch"},
+    { "awesome", awesomeMenu}
+}
+
+local graphicMenu = {
+    { "shotwell", "shotwell"},
+    { "gimp", "gimp" },
+    { "inkskape", "inkscape" }
+}
+
+local mediaMenu = {
+    { "ncmpcpp", terminal.." -e ncmpcpp"},
+    { "mplayer2", terminal.." -e mplayer2" }
+}
+
 local mainMenu = awful.menu({
     items = { 
-        { "settings", awesomeMenu },
         { "chromium", "chromium" },
-        { "spacefm", "spacefm"},
-        { "shotwell", "shotwell"},
-        { "ncmpcpp", terminal.." -e ncmpcpp"},
         { "irssi", terminal.." -e irssi"},
-        { "terminal", terminal }
+        { "terminal", terminal },
+        { "Graphics", graphicMenu },
+        { "Media", mediaMenu},
+        { "Util", utilMenu }
     }
 })
 
