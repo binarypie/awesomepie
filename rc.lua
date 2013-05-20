@@ -121,8 +121,8 @@ space:set_text(' ')
 -- {{{ Wibox
 --
 -- Create a wibox for each screen and add it
-mywibox = {}
-mywibox2 = {}
+top_wibox = {}
+bottom_wibox = {}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
@@ -187,46 +187,52 @@ for s = 1, screen.count() do
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
-    mywibox2[s] = awful.wibox({ position = "bottom", screen = s})
+    top_wibox[s] = awful.wibox({ position = "top", screen = s })
+    bottom_wibox[s] = awful.wibox({ position = "bottom", screen = s})
 
     -- Widgets that are aligned to the left
-    local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(menu.launcher)
-    left_layout:add(mytaglist[s])
-    left_layout:add(mypromptbox[s])
+    local top_left_layout = wibox.layout.fixed.horizontal()
+    top_left_layout:add(menu.launcher)
+    top_left_layout:add(mytaglist[s])
+    top_left_layout:add(mypromptbox[s])
 
     -- Widgets that are aligned to the right
-    local right_layout = wibox.layout.fixed.horizontal()
-    if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(network.downicon)
-    right_layout:add(network.downwidget)
-    right_layout:add(network.upicon)
-    right_layout:add(network.upwidget)
-    right_layout:add(cpu.icon)
-    right_layout:add(cpu.widget)
-    right_layout:add(ram.icon)
-    right_layout:add(ram.widget)
-    right_layout:add(volume.icon)
-    right_layout:add(volume.widget)
-    right_layout:add(battery.icon)
-    right_layout:add(battery.widget)
-    right_layout:add(space)
-    right_layout:add(clock.widget)
-    right_layout:add(space)
-    right_layout:add(mylayoutbox[s])
+    local top_right_layout = wibox.layout.fixed.horizontal()
+    --top_right_layout:add(network.downicon)
+    --top_right_layout:add(network.downwidget)
+    --top_right_layout:add(network.upicon)
+    --top_right_layout:add(network.upwidget)
+    top_right_layout:add(cpu.icon)
+    top_right_layout:add(cpu.widget)
+    top_right_layout:add(ram.icon)
+    top_right_layout:add(ram.widget)
+    top_right_layout:add(volume.icon)
+    top_right_layout:add(volume.widget)
+    top_right_layout:add(battery.icon)
+    top_right_layout:add(battery.widget)
+    top_right_layout:add(space)
+    top_right_layout:add(clock.widget)
+    top_right_layout:add(space)
+    top_right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
-    local layout = wibox.layout.align.horizontal()
-    layout:set_left(left_layout)
-    -- layout:set_middle(mytasklist[s])
-    layout:set_right(right_layout)
+    local top_layout = wibox.layout.align.horizontal()
+    top_layout:set_left(top_left_layout)
+    top_layout:set_right(top_right_layout)
 
-    local layout2 = wibox.layout.align.horizontal()
-    layout2:set_left(mytasklist[s])
+    local bottom_left_layout = wibox.layout.fixed.horizontal()
+    -- nothing for now
 
-    mywibox[s]:set_widget(layout)
-    mywibox2[s]:set_widget(layout2)
+    local bottom_right_layout = wibox.layout.fixed.horizontal()
+    if s == 1 then bottom_right_layout:add(wibox.widget.systray()) end
+
+    local bottom_layout = wibox.layout.align.horizontal()
+    bottom_layout:set_left(bottom_left_layout)
+    bottom_layout:set_middle(mytasklist[s])
+    bottom_layout:set_right(bottom_right_layout)
+
+    top_wibox[s]:set_widget(top_layout)
+    bottom_wibox[s]:set_widget(bottom_layout)
 end
 -- }}}
 

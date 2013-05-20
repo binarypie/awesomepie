@@ -47,8 +47,8 @@ theme.border_marked = "#7ee71f"
 -- }}}
 
 -- {{{ Menu
-theme.menu_height       = "15"
-theme.menu_width        = "100"
+theme.menu_height       = "20"
+theme.menu_width        = "150"
 theme.menu_border_width = "0"
 theme.menu_fg_normal    = "#aaaaaa"   --color txt pip
 theme.menu_fg_focus     = "#00a0ff"
@@ -76,7 +76,11 @@ theme.widget_batt_empty = theme.confdir .. "/widgets/red/bat_empty_02.png"
 theme.widget_batt_low   = theme.confdir .. "/widgets/yellow/bat_low_02.png"
 theme.widget_batt       = theme.confdir .. "/widgets/blue/bat_full_02.png"
 theme.widget_batt_full  = theme.confdir .. "/widgets/green/bat_full_02.png"
-theme.widget_batt_ac    = theme.confdir .. "/widgets/yellow/ac_01.png"
+
+theme.widget_batt_ac_empty = theme.confdir .. "/widgets/red/ac_01.png"
+theme.widget_batt_ac_low   = theme.confdir .. "/widgets/yellow/ac_01.png"
+theme.widget_batt_ac       = theme.confdir .. "/widgets/blue/ac_01.png"
+theme.widget_batt_ac_full  = theme.confdir .. "/widgets/green/ac_01.png"
 
 theme.widget_clock      = theme.confdir .. "/widgets/cyan/clock.png"
 theme.widget_vol        = theme.confdir .. "/widgets/blue/spkr_01.png"

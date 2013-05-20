@@ -12,29 +12,42 @@ local awesomeMenu = {
 }
 
 local utilMenu = {
-    { "ranger", terminal.." -e ranger"},
-    { "speedcrunch", "speedcrunch"},
-    { "awesome", awesomeMenu}
+    { "irssi", terminal.." -e irssi" },
+    { "ranger", terminal.." -e ranger" },
+    { "speedcrunch", "speedcrunch" },
+    { "awesome", awesomeMenu }
+}
+
+local browserMenu = {
+    { "chrome", "google-chrome" },
+    { "firefox", "firefox" }
 }
 
 local graphicMenu = {
-    { "shotwell", "shotwell"},
+    { "darktable", "darktable" },
     { "gimp", "gimp" },
-    { "inkskape", "inkscape" }
+    { "inkskape", "inkscape" },
+}
+
+local gameMenu = {
+    { "minecraft", "java -jar /home/binarypie/bin/minecraft/TechnicLauncher.jar" },
+    { "steam", "steam" }
 }
 
 local mediaMenu = {
-    { "ncmpcpp", terminal.." -e ncmpcpp"},
-    { "mplayer2", terminal.." -e mplayer2" }
+    { "mplayer2", terminal.." -e mplayer2" },
+    { "ncmpcpp", terminal.." -e ncmpcpp" },
+    { "google music", "google-musicmanager" }
 }
 
 local mainMenu = awful.menu({
     items = { 
-        { "chromium", "chromium" },
-        { "irssi", terminal.." -e irssi"},
-        { "terminal", terminal },
+        { "Chromium", "chromium" },
+        { "Terminal", terminal },
+        { "Browsers", browserMenu },
+        { "Games", gameMenu },
         { "Graphics", graphicMenu },
-        { "Media", mediaMenu},
+        { "Media", mediaMenu },
         { "Util", utilMenu }
     }
 })
