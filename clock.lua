@@ -5,6 +5,6 @@ local vicious   = require("vicious")
 local M = {}
 
 M.widget = wibox.widget.textbox()
-vicious.register(M.widget, vicious.widgets.date, "%m/%d %I:%M%p", 60)
+vicious.register(M.widget, vicious.widgets.date, "%b %d %I:%M%p", 60)
 
 return M

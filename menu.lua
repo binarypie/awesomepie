@@ -20,6 +20,7 @@ local utilMenu = {
 
 local browserMenu = {
     { "chrome", "google-chrome" },
+    { "chromium", "chromium" },
     { "firefox", "firefox" }
 }
 
@@ -42,7 +43,6 @@ local mediaMenu = {
 
 local mainMenu = awful.menu({
     items = { 
-        { "Chromium", "chromium" },
         { "Terminal", terminal },
         { "Browsers", browserMenu },
         { "Games", gameMenu },
