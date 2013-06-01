@@ -20,8 +20,7 @@ local utilMenu = {
 
 local browserMenu = {
     { "chrome", "google-chrome" },
-    { "chromium", "chromium" },
-    { "firefox", "firefox" }
+    { "chromium", "chromium" }
 }
 
 local graphicMenu = {
