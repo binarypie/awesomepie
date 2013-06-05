@@ -19,7 +19,7 @@ vicious.register(M.downwidget, function(format, warg)
             down = down + args[key]
         end
     end
-    args['{down}'] = string.format("%.2f", down)
+    args['{down}'] = string.format("%.2fk", down)
     return args
 end, "<span>${down}</span>", 1)
 vicious.cache(M.downwidget)
@@ -33,7 +33,7 @@ vicious.register(M.upwidget, function(format, warg)
             up = up + args[key]
         end
     end
-    args['{up}'] = string.format("%.2f", up)
+    args['{up}'] = string.format("%.2fk", up)
     return args
 end, "<span>${up}</span>", 1)
 vicious.cache(M.upwidget)
