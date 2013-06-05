@@ -23,4 +23,6 @@ vicious.register(M.widget, function(format, warg)
     return args
 end, '<span>$2%</span>', 10, 'BAT0')
 
+vicious.cache(M.widget)
+
 return M

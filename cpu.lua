@@ -9,5 +9,6 @@ M.icon:set_image(beautiful.widget_cpu)
 
 M.widget = wibox.widget.textbox()
 vicious.register(M.widget, vicious.widgets.cpu, "<span>$1%</span>", 3)
+vicious.cache(M.widget)
 
 return M
