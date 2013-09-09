@@ -382,7 +382,9 @@ awful.rules.rules = {
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
                      buttons = clientbuttons,
-                     size_hints_honor = false
+                     size_hints_honor = false,
+                     maximized_vertical   = false,
+                     maximized_horizontal = false,
                     }
     },
     { rule = { class = "MPlayer" },
@@ -391,9 +393,6 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
 }
 -- }}}
 
